@@ -3,6 +3,8 @@
 
 #Region "Form Events"
     Private Sub Form1_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
+        'Determines what keys are pressed and what to do when each one is pressed
+
         Select Case e.KeyCode
             Case 37
                 snake(0).facing = 1 'Left
@@ -13,13 +15,17 @@
             Case 40
                 snake(0).facing = 4 'Down
             Case Keys.P
+                'Pauses the game, it toggles the state of the timer's enabled value               
+                'ie: if its set as true then it gets changed to not true and vice verse
                 If GameOver = False Then
                     Timer1.Enabled = Not Timer1.Enabled
                     Timer2.Enabled = Not Timer2.Enabled
                 End If
             Case Keys.R
+                'Restarts the game and what not.
                 StartUp()
             Case Keys.H
+                'shows debug info while depressed
                 Label1.Visible = Not Label1.Visible
                 Label2.Visible = Not Label2.Visible
                 Label3.Visible = Not Label3.Visible
@@ -40,18 +46,23 @@
                 Label13.Visible = Not Label13.Visible
                 Label21.Visible = Not Label21.Visible
             Case Keys.D
+                'turns designer mode on
+                'designer mode leaves the debuging labels visable
                 designermode = Not designermode
                 Label14.Visible = Not Label14.Visible
             Case Keys.I
+                'toggles background image
                 If changepic = False Then
                     PictureBox1.Image = My.Resources.white
                     changepic = True
                 Else
+                    'shows a grid of the sub quads
                     PictureBox1.Image = My.Resources.grid
                     changepic = False
                 End If
 
             Case Keys.M
+                'toggles music, not yet functional
                 music = Not music
                 If music = True Then
                     Label22.Text = "Sound Status: Unmuted"
@@ -59,17 +70,20 @@
                     Label22.Text = "Sound Status: Muted"
                 End If
             Case Keys.Escape
+                'exits the game
                 End
         End Select
 
     End Sub
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        'sets buffering and rendering settings to better optimize painting on the form
         Me.SetStyle(ControlStyles.DoubleBuffer, True)
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.SetStyle(ControlStyles.UserPaint, True)
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
         Me.UpdateStyles()
         'My.Computer.Audio.Play("music\loop2.wav", AudioPlayMode.BackgroundLoop)
+        'starts the game
         Call StartUp()
     End Sub
 #End Region
@@ -321,7 +335,7 @@
         Draw(monster.x, monster.y, Brushes.Black)
     End Sub
     '////////////
-    ' NEW NEW NEW 12-11-10
+    ' NEW NEW NEW 12-11-2010
     '////////////
     Private Sub movesnake()
         If length > 100 Then
@@ -356,7 +370,8 @@
         End If
     End Sub
 #End Region
-
+    'Need to update the Way the Quads are detected and if possible update the way that the monster determines where to go to eat...
+    'need to program in a way to control how smart the AI is.
 #Region "QUADs"
     Private Sub findQuads()
         SnakeQuad = getQuad(snake(0).x, snake(0).y)
@@ -365,7 +380,6 @@
         MobSubQuad = getSubQuad(MobQuad, monster.x, monster.y)
 
     End Sub
-
     Function getQuad(ByVal X As Integer, ByVal Y As Integer)
 
         Dim quad As Integer = 1
@@ -406,6 +420,7 @@
 
         Return SubQuad
     End Function
+
 
 
 
