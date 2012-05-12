@@ -1,7 +1,7 @@
 ﻿Public Class FrmMAin
 
 
-#Region "form"
+#Region "Form Events"
     Private Sub Form1_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
         Select Case e.KeyCode
             Case 37
@@ -74,7 +74,7 @@
     End Sub
 #End Region
 
-#Region "LOOP"
+#Region "Timer Loops for Snake and Moster Movement"
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         PictureBox1.Refresh()
@@ -325,9 +325,8 @@
     '////////////
     Private Sub movesnake()
         If length > 100 Then
-            'game over
-            happyend = True
-            Call GameIsOver()
+            'game over you won.
+            Call GameIsOver(True)
         Else
 
             For i As Integer = (length - 1) To 1 Step (-1)
@@ -416,14 +415,14 @@
     Public Sub MonsterEat()
         If monster.x = snake(0).x And monster.y = snake(0).y Then
             'end game because you are dead
-            GameIsOver()
+            GameIsOver(False)
         End If
         For c As Integer = 1 To length - 1
             If monster.x = snake(c).x And monster.y = snake(c).y Then
                 'lose one length
                 If length <= 3 Then
-                    'game over
-                    GameIsOver()
+                    'game over, guess what you died...
+                    GameIsOver(False)
                 Else
                     length -= 1
                 End If
@@ -432,12 +431,12 @@
         Next
 
         If snake(0).x < 0 Or snake(0).x >= 600 Then
-            'game over out of bounds
-            GameIsOver()
+            'game over out of bounds, you hit an electric fence haha
+            GameIsOver(False)
         End If
         If snake(0).y < 0 Or snake(0).y >= 600 Then
-            'game over out of bounds
-            GameIsOver()
+            'game over out of bounds, you fell off a cliff...
+            GameIsOver(False)
         End If
     End Sub
     Private Sub findfood()
@@ -449,9 +448,9 @@
       
         If snake(0).x = food.x And snake(0).y = food.y Then
             If length > 100 Then
-                'game over
-                happyend = True
-                Call GameIsOver()
+                'game over wow you played for a long time to get this far
+
+                Call GameIsOver(True)
             Else
 
                 Select Case snake(length - 1).facing
@@ -527,11 +526,11 @@
 
         Return Nothing
     End Function
-    Function GameIsOver()
+    Function GameIsOver(ByVal YouWon As Boolean)
         GameOver = True
         Timer1.Enabled = False
         Timer2.Enabled = False
-        If happyend = True Then
+        If YouWon = True Then
             WriteText("YOU WIN!")
         Else
             WriteText("GAME OVER")
